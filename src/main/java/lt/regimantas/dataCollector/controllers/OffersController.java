@@ -36,16 +36,14 @@ public class OffersController extends ApiRestController {
 
     @GetMapping("/writetodb/{site}")
     void saveToDb(@PathVariable Sites site) throws IOException {
-        List<Offer> offerList = DataParser.whatToParse(site, 0);
-            if (offerList != null) {
-                offerRepository.saveAll(offerList);
-
-            }
+        List<Offer> offerList = DataParser.doParsing(site, 0);
+        if (offerList != null)
+            offerRepository.saveAll(offerList);
     }
 
     @PostMapping("/test")
     List<Offer> test(@RequestBody TestingParams testingParams) throws IOException {
-        List<Offer> offerList = DataParser.whatToParse(testingParams.getSite(), testingParams.getTimes());
+        List<Offer> offerList = DataParser.doParsing(testingParams.getSite(), testingParams.getEntries());
             return offerList;
     }
 

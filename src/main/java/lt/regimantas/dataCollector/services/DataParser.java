@@ -5,7 +5,7 @@ import lt.regimantas.dataCollector.model.Offer;
 import lt.regimantas.dataCollector.model.ParserNodes;
 import lt.regimantas.dataCollector.repositories.sitesToParse.OfferInterface;
 import lt.regimantas.dataCollector.repositories.sitesToParse.Sites;
-import lt.regimantas.dataCollector.repositories.sitesToParse.SitesFactory;
+import lt.regimantas.dataCollector.repositories.sitesToParse.SiteFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,36 +20,40 @@ import java.util.stream.Collectors;
 @Service
 public class DataParser {
 
-    public static List<Offer> whatToParse(Sites site, int test) {
+    public static List<Offer> doParsing(Sites site, int test){
+        if(site.equals(Sites.ALL))
+            return getAllSitesOffersHeaders(test);
+        else
+            return getOneSiteOffersHeaders(site, test);
+    }
+
+    public static List<Offer> getOneSiteOffersHeaders(Sites site, int test){
+        return prepareForParsingHeaders(site, test);
+    }
+
+    public static List<Offer> getAllSitesOffersHeaders(int test){
         List<Offer> offerList = new ArrayList<>();
-        if (site.equals(Sites.ALL)) {
-            for (Sites s : Sites.values()) {
-                if (!s.equals(Sites.ALL)) {
-                    offerList.addAll(parseOffers(s, test));
-                }
+        for (Sites s : Sites.values()) {
+            if (!s.equals(Sites.ALL)) {
+                offerList.addAll(prepareForParsingHeaders(s, test));
             }
-        } else {
-            offerList.addAll(parseOffers(site, test));
         }
         return offerList;
     }
 
-    public static List<Offer> parseOffers(Sites site, int test) {
-        OfferInterface siteFactory = SitesFactory.getSiteFactory(site);
+    public static List<Offer> prepareForParsingHeaders(Sites site, int test) {
+        OfferInterface siteFactory = SiteFactory.getSiteFactory(site);
         try {
-            List<Offer> offerList = extractDescriptions(
-                    parseOfferHeaders(
+            List<Offer> offerList = parseOfferHeaders(
                             siteFactory.getNodes().getInicialPage(),
                             siteFactory.getNodes().getUrl(),
                             siteFactory,
                             test
-                    ),
-                    siteFactory
-            );
+                    );
             return offerList;
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<Offer>();
         }
 
     }
@@ -58,8 +62,6 @@ public class DataParser {
         ParserNodes pNodes = siteFactory.getNodes();
         List<Offer> offerList = new ArrayList<>();
 
-//        File url = new File(address);
-//        Document doc = Jsoup.parse(url, "utf-8");
         Document doc = Jsoup.connect(address).userAgent("Chrome").get();
         Elements elements = doc.select(pNodes.getContainingBlock());
 
@@ -82,6 +84,7 @@ public class DataParser {
                 if (test > 0) {
                     Offer iFoundNextPage = new Offer();
                     iFoundNextPage.setTitle("Next Page Was FOUND!");
+                    iFoundNextPage.setSite(siteFactory.getNodes().getSite().toString());
                     offerList.add(iFoundNextPage);
                 } else {
                     String nextPageUrl = siteFactory.validateUrl(nextPage.attr("href"));
@@ -91,6 +94,7 @@ public class DataParser {
                 if (test > 0) {
                     Offer iFoundNextPage = new Offer();
                     iFoundNextPage.setTitle("Next Page Was NOT Found");
+                    iFoundNextPage.setSite(siteFactory.getNodes().getSite().toString());
                     offerList.add(iFoundNextPage);
                 }
             }

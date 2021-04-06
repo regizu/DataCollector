@@ -1,14 +1,13 @@
 package lt.regimantas.dataCollector.repositories.sitesToParse;
 
-public class SitesFactory {
+public class SiteFactory {
 
     public static OfferInterface getSiteFactory(Sites site){
-        OfferInterface offerInterface;
         switch (site){
             case CVBANKAS:
-                return offerInterface = new CvBankas();
+                return new CvBankas();
             case CVONLINE:
-                return offerInterface = new CvOnline();
+                return new CvOnline();
 
             default: return null;
         }

@@ -19,7 +19,7 @@ public class CvOnline implements OfferInterface {
     public static ParserNodes pNodes = new ParserNodes(
             Sites.CVONLINE,
             ".cvo_module_offer_content",
-            "https://www.cvonline.lt/darbo-skelbimai/informacines-technologijos/q-java/vilniaus-vilnius?sort=inserted&dir=desc",
+            "https://www.cvonline.lt/lt/search?limit=20&offset=0&categories%5B0%5D=INFORMATION_TECHNOLOGY&keywords%5B0%5D=java&towns%5B0%5D=540&isHourlySalary=false&isRemoteWork=false",
             "h2",
             "#page-main-content",
             "[itemprop=\"hiringOrganization\"]",

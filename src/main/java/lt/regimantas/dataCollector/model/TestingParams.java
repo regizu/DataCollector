@@ -8,5 +8,5 @@ import lt.regimantas.dataCollector.repositories.sitesToParse.Sites;
 @Getter
 public class TestingParams {
     Sites site;
-    int times;
+    int entries;
 }

@@ -6,7 +6,7 @@ import lt.regimantas.dataCollector.model.TestingParams;
 import lt.regimantas.dataCollector.repositories.OfferRepository;
 import lt.regimantas.dataCollector.repositories.OfferStorageRepository;
 import lt.regimantas.dataCollector.repositories.sitesToParse.Sites;
-import lt.regimantas.dataCollector.services.DataParser;
+import lt.regimantas.dataCollector.services.DataParserService;
 import lt.regimantas.dataCollector.services.FilterSortDoPaging;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+
+import static lt.regimantas.dataCollector.services.DataParserService.*;
 
 @Controller
 public class OffersController extends ApiRestController {
@@ -36,14 +38,14 @@ public class OffersController extends ApiRestController {
 
     @GetMapping("/writetodb/{site}")
     void saveToDb(@PathVariable Sites site) throws IOException {
-        List<Offer> offerList = DataParser.doParsing(site, 0);
+        List<Offer> offerList = doParsing(site, 0);
         if (offerList != null)
             offerRepository.saveAll(offerList);
     }
 
     @PostMapping("/test")
     List<Offer> test(@RequestBody TestingParams testingParams) throws IOException {
-        List<Offer> offerList = DataParser.doParsing(testingParams.getSite(), testingParams.getEntries());
+        List<Offer> offerList = doParsing(testingParams.getSite(), testingParams.getReduceTo());
             return offerList;
     }
 

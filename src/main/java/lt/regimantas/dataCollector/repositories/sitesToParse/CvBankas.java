@@ -21,7 +21,7 @@ public class CvBankas implements OfferInterface {
             "[itemprop=\"description\"]",
             ".dib",
             ".list_city",
-            ".salary_inner",
+            ".salary_amount",
             ".list_a",
             ".list_logo_c img",
             ".pages_ul_inner a",

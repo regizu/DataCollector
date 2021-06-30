@@ -18,15 +18,15 @@ public class CvOnline implements OfferInterface {
 
     public static ParserNodes pNodes = new ParserNodes(
             Sites.CVONLINE,
-            ".cvo_module_offer_content",
-            "https://www.cvonline.lt/lt/search?limit=20&offset=0&categories%5B0%5D=INFORMATION_TECHNOLOGY&keywords%5B0%5D=java&towns%5B0%5D=540&isHourlySalary=false&isRemoteWork=false",
-            "h2",
+            ".vacancies-list__item",
+            "https://cvonline.lt/lt/search?limit=20&offset=0&categories%5B0%5D=INFORMATION_TECHNOLOGY&keywords%5B0%5D=java&towns%5B0%5D=540&isHourlySalary=false&isRemoteWork=false",
+            ".vacancy-item__title",
             "#page-main-content",
-            "[itemprop=\"hiringOrganization\"]",
-            "[itemprop=\"jobLocation\"]",
-            ".offer-salary",
-            "[itemprop=\"title\"]",
-            ".offer_logo img",
+            ".vacancy-item__info-main a",
+            ".vacancy-item__locations",
+            ".vacancy-item__salary-label",
+            ".vacancy-item__content a",
+            ".vacancy-item__logo img",
             "#page-pagination a",
             0
     );

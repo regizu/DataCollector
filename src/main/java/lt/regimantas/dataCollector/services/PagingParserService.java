@@ -18,12 +18,16 @@ public class PagingParserService {
         Elements pages = allContainingDocument.select(pageNode);
         if (pages != null) {
             Element nextPage = getNextPage(pages, currentPageNum);
-            if (nextPage != null) {
-                makeTestReportOrDoNextPageParsing(siteFactory, offerList, nextPage, reduceTo);
-            } else {
-                if (reduceTo > 0) {
-                    makeTestReport(siteFactory, offerList, "Next Page Was NOT Found");
-                }
+            ifNextPageExists(siteFactory, offerList, nextPage, reduceTo);
+        }
+    }
+
+    private static void ifNextPageExists(OfferInterface siteFactory, List<Offer> offerList, Element nextPage, int reduceTo) throws IOException {
+        if (nextPage != null) {
+            makeTestReportOrDoNextPageParsing(siteFactory, offerList, nextPage, reduceTo);
+        } else {
+            if (reduceTo > 0) {
+                makeTestReport(siteFactory, offerList, "Next Page Was NOT Found");
             }
         }
     }
